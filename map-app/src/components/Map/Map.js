@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Map.css';
 import { Map, GoogleApiWrapper, Marker, Polyline } from 'google-maps-react';
 import { Message, Icon, Container, Segment } from 'semantic-ui-react';
-import earthquakes from '../../earthquakes.json';
-import faults from '../../faults.json';
+import axios from 'axios';
 
 const MapContainer = props => {
   const { bulkAddMarkers, markers, viewMarkerData } = props;
@@ -62,24 +61,30 @@ const MapContainer = props => {
   }, []);
 
   useEffect(() => {
-    const dataSet = earthquakes.features
+    axios.get('/data/earthquake').then(res => {
+      const { data } = res;
+      const earthquakeData = data.earthquakeData;
+      const faultLineData = data.faultLineData;
+    
+      const dataSet = earthquakeData.features
       .filter(feature => feature.geometry.type === 'Point')
       .reduce((arr, feature) => {
         const { geometry, properties } = feature;
         return arr.concat(
           { lat: geometry.coordinates[1], lng: geometry.coordinates[0], magnitude: feature.properties.mag, ...properties }
         )}, 
-      [])
-    
-    const faultLines = faults.features
+      []);
+
+      const faultLines = faultLineData.features
       .filter(feature => feature.geometry.type === 'LineString')
       .reduce((arr, feature) => {
         const latLongs = feature.geometry.coordinates.map(coords => ({ lat: coords[1], lng: coords[0] }))
         return arr.concat([latLongs])
       }, []);
-
-    setPolylines(faultLines);
-    bulkAddMarkers(dataSet);
+    
+      setPolylines(faultLines);
+      bulkAddMarkers(dataSet);
+    });
   }, []);
 
   if (!initialLocation) return (
@@ -119,5 +124,5 @@ const shouldNotUpdate = (props, nextProps) => {
 }
 
 export default React.memo(GoogleApiWrapper({
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY || 'AIzaSyDomeXKvy8n2GG1lCgJ7KZLenY7atqHdNU',
 })(MapContainer), shouldNotUpdate);

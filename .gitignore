@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/map-app/node_modules
 /.pnp
 .pnp.js
 
@@ -9,7 +10,7 @@
 /coverage
 
 # production
-/build
+map-app/build
 
 # misc
 .DS_Store
