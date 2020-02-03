@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useRef } from 'react';
-import { Form, Dropdown, Button, Container, Segment, Divider, Header, Icon, Menu, Input } from 'semantic-ui-react';
+import { Form, Dropdown, Button, Container, Segment, Divider, Header, Icon, Menu, Input, Message } from 'semantic-ui-react';
 
 const filterOptions = [
     {
@@ -20,13 +20,10 @@ const filterOptions = [
 ]
 
 const FilterForm = props => {
-    const { handleApplyFilter, handleRemoveFilter, showSidebar, filters, handleApplyCustomFilter, customFilters, handleRemoveCustomFilter } = props;
+    const { customFilterError, handleApplyFilter, handleRemoveFilter, showSidebar, filters, handleApplyCustomFilter, customFilters, handleRemoveCustomFilter } = props;
     const [filterSelected, setFilterSelected] = useState(null);
     const [filterType, setFilterType] = useState('Built-In');
-    const [customFilterInput, setCustomFilterInput] = useState({ nameOfFilter: null, equation: null });
-
-    const nameOfFilter = useRef(null);
-    const equation = useRef(null);
+    const [customFilterInput, setCustomFilterInput] = useState({ nameOfFilter: '', equation: '' });
 
     const handleOnSubmit = () => {
         if (filters.includes(filterSelected) || customFilters.includes(filterSelected)) return;
@@ -35,10 +32,11 @@ const FilterForm = props => {
     }
 
     const handleCustomFilterSubmit = () => {
-        if (Object.values(customFilterInput).length !== 2 ) return;
+        const inputValues = Object.values(customFilterInput);
+        if (!inputValues[0].length || !inputValues[1].length) return;
         if (filters.includes(filterSelected) || customFilters.includes(filterSelected)) return;
         handleApplyCustomFilter({ ...customFilterInput, equation: `(${customFilterInput.equation})`});
-        setCustomFilterInput({ nameOfFilter: null, equation: null });
+        setCustomFilterInput({ nameOfFilter: '', equation: '' });
     }
 
     const renderFilterButtons = () => {
@@ -63,6 +61,24 @@ const FilterForm = props => {
         })
     }
 
+    const renderErrorMessage = () => {
+        if (!customFilterError) {
+          return (
+            <Message floating info>
+            <Message.Header>Use JavaScript syntax to build equation</Message.Header>
+            <p>Use x to access any property on the earthquake object. (Ex: x.magnitude, x.time)</p>
+          </Message>
+          );
+        }
+    
+        return (
+          <Message floating negative>
+            <Message.Header>Cannot Apply Custom Filter</Message.Header>
+            <p>Error: {`${customFilterError}`}</p>
+          </Message>
+        );
+    }
+
     const renderForm = () => {
         if (filterType === 'Built-In') {
             return (
@@ -85,26 +101,34 @@ const FilterForm = props => {
             );
         } else {
             return (
-                <Form onSubmit={handleCustomFilterSubmit}>
-                    <Form.Field 
-                        control={Input}
-                        required
-                        label="Name of Filter"
-                        ref={nameOfFilter}
-                        onChange={(e, result) => setCustomFilterInput({ ...customFilterInput, nameOfFilter: result.value })}
-                    />
-                    <Form.Field 
-                        control={Input}
-                        required
-                        label="Equation"
-                        ref={equation}
-                        onChange={(e, result) => setCustomFilterInput({ ...customFilterInput, equation: result.value })}
-                    />
-                    <Form.Field 
-                        control={Button}
-                        content="Apply Filter"
-                    />
-                </Form>
+                <Fragment>
+                    {filterType === 'Custom' && renderErrorMessage()}
+                    <Form onSubmit={handleCustomFilterSubmit}>
+                        
+                        <Form.Field 
+                            control={Input}
+                            required
+                            label='Name Of Filter'
+                            type='text'
+                            onChange={e => setCustomFilterInput({ ...customFilterInput, nameOfFilter: e.target.value })}
+                            value={customFilterInput.nameOfFilter}
+                        />
+                       
+                       <Form.Field
+                            control={Input}
+                            required
+                            label='Equation'
+                            type='text'
+                            onChange={e => setCustomFilterInput({ ...customFilterInput, equation: e.target.value })}
+                            value={customFilterInput.equation}
+                        />
+
+                        <Form.Field 
+                            control={Button}
+                            content="Apply Filter"
+                        />
+                    </Form>
+                </Fragment>
             )
         }
     }

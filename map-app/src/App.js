@@ -15,6 +15,7 @@ function App() {
 
   const [filters, setFilters] = useState([]);
   const [customFilters, setCustomFilters] = useState([]); 
+  const [customFilterError, setCustomFilterError] = useState(null);
 
   //Sidebar Actions
   const [visible, setVisible] = useState(false);
@@ -52,11 +53,6 @@ function App() {
   const handleApplyCustomFilter = customFilter => handleAddCustomFilter(customFilter);
   const handleRemoveCustomFilter = equation => setCustomFilters(customFilters.filter(f => f.equation !== equation));
   
-  // let timer;
-  // const handleOnChangeLocation = (e, result) => {
-  //   clearTimeout(timer);
-  //   timer = setTimeout(() => setSearchLocation(result.value), 300)
-  // }
 
   const viewMarkerData = markerData => {
     if (!selectedMarker) setLoadingSideBar(true);
@@ -66,14 +62,31 @@ function App() {
 
   useEffect(() => {
     if (!filters.length && !customFilters.length) return setFilteredMarkers(markers);
-    function buildFunction(filters) {
-      const joinedFilters = filters.join(' || ');
-      return new Function('x', 'return ' + joinedFilters);
-    }
+    try {
+      function buildFunction(filters) {
+        const joinedFilters = filters.join(' || ');
+        return new Function('x', 'return ' + joinedFilters);
+      }
 
-    const customSet = customFilters.map(f => f.equation);
-    setFilteredMarkers(markers.filter(buildFunction(filters.concat(customSet))));
+      const customSet = customFilters.map(f => f.equation);
+      const builtFunction = buildFunction(filters.concat(customSet));
+      const filteredMarkers = markers.filter(builtFunction);
+      setFilteredMarkers(filteredMarkers);
+    } catch(e) {
+      customFilters.pop();
+      setCustomFilters(customFilters)
+      setCustomFilterError(e);
+    }
   }, [filters, customFilters, markers]);
+
+  useEffect(() => {
+    if (!customFilterError) return;
+
+    setTimeout(() => {
+      setCustomFilterError(null)
+    }, 5000);
+
+  }, [customFilterError]);
 
 
   const renderTable = () => {
@@ -115,6 +128,7 @@ function App() {
           width='wide'
         > 
           <FilterForm 
+            customFilterError={customFilterError}
             filters={filters}
             customFilters={customFilters}
             showSidebar={showSidebar} 
