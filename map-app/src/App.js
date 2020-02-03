@@ -94,8 +94,8 @@ function App() {
 
     return (
       <Container>
-        <Segment>
-          <Menu>
+        <Segment style={{ width: 'inherit' }}>
+          <Menu inverted>
               <Menu.Item position='left' icon='angle right' onClick={() => setSelectedMarker(null)}/>
           </Menu>
           <Table celled>
@@ -103,8 +103,8 @@ function App() {
               {Object.keys(selectedMarker).map((key, i) => {
                 return (
                   <Table.Row key={i}>
-                    <Table.Cell width={'one'}>{key}</Table.Cell>
-                    <Table.Cell width={'one'}>{selectedMarker[key]}</Table.Cell>
+                    <Table.Cell>{key}</Table.Cell>
+                    <Table.Cell>{selectedMarker[key]}</Table.Cell>
                   </Table.Row>
                 );
               })}
@@ -181,10 +181,10 @@ function App() {
 
         <Sidebar
           as={Container}
-          animation='overlay'
+          animation='scale down'
           icon='labeled'
           visible={!!selectedMarker}
-          width='wide'
+          width='very wide'
           direction='right'
           onHidden={() => setLoadingSideBar(false)}
           onShow={() => setLoadingSideBar(false)}

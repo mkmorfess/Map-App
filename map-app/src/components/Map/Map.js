@@ -9,7 +9,7 @@ const MapContainer = props => {
   const [polylines, setPolylines] = useState([]);
   const [initialLocation, setInitialLocation] = useState()
   const mapStyles = {
-    width: '97.8%',
+    width: '98%',
     height: '90%'
   };
 
@@ -103,17 +103,19 @@ const MapContainer = props => {
 
   return (
     <Container fluid>
-      <Map
-        google={props.google}
-        zoom={4}
-        style={mapStyles}
-        initialCenter={initialLocation}
-        yesIWantToUseGoogleMapApiInternals
-        // location={searchedLocation}
-      >
-        {renderMarkers()}
-        {renderPolylines()}
-      </Map>
+      <Segment style={{ height: '100vh'}}>
+        <Map
+          google={props.google}
+          zoom={4}
+          style={mapStyles}
+          initialCenter={initialLocation}
+          yesIWantToUseGoogleMapApiInternals
+          // location={searchedLocation}
+        >
+          {renderMarkers()}
+          {renderPolylines()}
+        </Map>
+      </Segment>
     </Container>
   );
 }
