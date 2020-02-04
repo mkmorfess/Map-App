@@ -54,25 +54,25 @@ const MapContainer = props => {
   })
 
   useEffect(() => {
-    const handleLocationError = err => {
-      console.error(err && err.code);
-      console.error(err && err.message);
+    // const handleLocationError = err => {
+    //   console.error(err && err.code);
+    //   console.error(err && err.message);
 
-      setInitialLocation({ lat: 33.8283, lng: -98.5795 });
-    }
+    //   setInitialLocation({ lat: 33.8283, lng: -98.5795 });
+    // }
     
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(location => {
-        const { coords } = location
-        setInitialLocation({ lat: coords.latitude, lng: coords.longitude });
-      }, handleLocationError);
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(location => {
+    //     const { coords } = location
+    //     setInitialLocation({ lat: coords.latitude, lng: coords.longitude });
+    //   }, handleLocationError);
 
-      setTimeout(function() {
-        setInitialLocation({ lat: 33.8283, lng: -98.5795 });
-      }, 3000)
-    } else {
-      setInitialLocation({ lat: 33.8283, lng: -98.5795 });
-    }
+    //   setTimeout(function() {
+    //     setInitialLocation({ lat: 33.8283, lng: -98.5795 });
+    //   }, 3000)
+    // } else {
+    setInitialLocation({ lat: 33.8283, lng: -98.5795 });
+    // }
 
   }, []);
 
