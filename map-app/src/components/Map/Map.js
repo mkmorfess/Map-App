@@ -54,10 +54,16 @@ const MapContainer = props => {
   })
 
   useEffect(() => {
+    const handleLocationError = err => {
+      console.error(err && err.code);
+      console.error(err && err.message);
+
+      setInitialLocation({ lat: 33.8283, lng: -98.5795 });
+    }
     navigator.geolocation.getCurrentPosition(location => {
       const { coords } = location
       setInitialLocation({ lat: coords.latitude, lng: coords.longitude });
-    });
+    }, handleLocationError);
   }, []);
 
   useEffect(() => {
