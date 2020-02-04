@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Dropdown, Icon, Menu } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Header } from 'semantic-ui-react';
 import Modal from '../Modal/Modal';
 import ModalOptions from '../Modal/ModalOptions';
 
@@ -37,6 +37,7 @@ const Nav = props => {
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
+            <Header style={{ margin: 'auto', paddingRight: '40px' }} inverted>Contiguous U.S. Earthquakes - 4.0+ Magnitude - (2000-2020)</Header>
         </Menu>
 
         <Modal open={isOpen} onClose={onClose} >

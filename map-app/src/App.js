@@ -88,7 +88,22 @@ function App() {
 
   }, [customFilterError]);
 
-
+  const renderTableCell = (key, data) => {
+    switch(key) {
+      case 'tsunami':
+        return data ? 'true' : 'false';
+      case 'time':
+        return new Date(data).toDateString();
+      case 'updated':
+        return new Date(data).toDateString();
+      case 'url':
+        return <a target='_blank' href={data}>Earthquake Event</a>
+      case 'detail':
+        return <a target='_blank' href={data}>Earthquake Details</a>
+      default:
+        return data;
+    }
+  }
   const renderTable = () => {
     if (!selectedMarker) return null;
 
@@ -104,7 +119,7 @@ function App() {
                 return (
                   <Table.Row key={i}>
                     <Table.Cell>{key}</Table.Cell>
-                    <Table.Cell>{selectedMarker[key]}</Table.Cell>
+                    <Table.Cell>{renderTableCell(key, selectedMarker[key])}</Table.Cell>
                   </Table.Row>
                 );
               })}
@@ -120,7 +135,7 @@ function App() {
       <Fragment>
         <Sidebar
           as={Container}
-          animation='scale down'
+          animation='overlay'
           icon='labeled'
           onHidden={() => setLoadingSideBar(false)}
           onShow={() => setLoadingSideBar(false)}
@@ -181,7 +196,7 @@ function App() {
 
         <Sidebar
           as={Container}
-          animation='scale down'
+          animation='overlay'
           icon='labeled'
           visible={!!selectedMarker}
           width='very wide'

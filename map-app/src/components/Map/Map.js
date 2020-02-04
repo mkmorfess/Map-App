@@ -33,8 +33,8 @@ const MapContainer = props => {
   }
 
   const getIcon = mag => {
-    if (mag < 5) return icons['low']
-    if (mag > 5 && mag < 7) return icons['medium']
+    if (mag <= 5) return icons['low']
+    if (mag > 5 && mag <= 7) return icons['medium']
     if (mag > 7) return icons['high'];
 
     return icons['unknown'];
