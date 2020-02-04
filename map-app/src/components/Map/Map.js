@@ -54,6 +54,10 @@ const MapContainer = props => {
   })
 
   useEffect(() => {
+    const options = {
+      timeout: 3000
+    };
+
     const handleLocationError = err => {
       console.error(err && err.code);
       console.error(err && err.message);
@@ -63,7 +67,7 @@ const MapContainer = props => {
     navigator.geolocation.getCurrentPosition(location => {
       const { coords } = location
       setInitialLocation({ lat: coords.latitude, lng: coords.longitude });
-    }, handleLocationError);
+    }, handleLocationError, options);
   }, []);
 
   useEffect(() => {
