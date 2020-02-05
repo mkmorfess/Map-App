@@ -97,9 +97,9 @@ function App() {
       case 'updated':
         return new Date(data).toDateString();
       case 'url':
-        return <a target='_blank' href={data}>Earthquake Event</a>
+        return <a target='_blank' rel="noopener noreferrer" href={data}>Earthquake Event</a>
       case 'detail':
-        return <a target='_blank' href={data}>Earthquake Details</a>
+        return <a target='_blank' rel="noopener noreferrer" href={data}>Earthquake Details</a>
       default:
         return data;
     }

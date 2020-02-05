@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Button, Header, Icon, Modal, Dropdown, Input } from 'semantic-ui-react';
 
 const markerOptions = [
@@ -17,14 +17,18 @@ const markerOptions = [
 const Marker = props => {
     const { onClose, handleaddmarker } = props;
     const [option, setOption] = useState('Current Location');
-    const [latLong, setLatLong] = useState({});
+    const [latLong, setLatLong] = useState({ latitude: '', longitude: '' });
 
 
     const getCurrentLocation = () => {
+        const onError = err => {
+            console.error(err && `${err.code} - ${err.message}`);
+            handleOnClose();
+        }
         return navigator.geolocation.getCurrentPosition(location => {
             handleaddmarker(location.coords);
             return handleOnClose();
-        }); 
+        }, onError); 
     }
 
     const setMarkerWithLatLong = () => {
@@ -50,7 +54,7 @@ const Marker = props => {
     }
 
     const resetModal = () => {
-        setLatLong({});
+        setLatLong({ latitude: '', longitude: '' });
     }
 
     const shouldDisable = () => {
@@ -58,11 +62,15 @@ const Marker = props => {
             case 'Current Location':
                 return false;
             case 'Latitude/Longitude':
-                return Object.values(latLong).length !== 2;
+                return !Object.values(latLong)[0].length || !Object.values(latLong)[1].length;
             default:
                 return true;
         }
     }
+
+    useEffect(() => {
+        setLatLong({ latitude: '', longitude: '' })
+    }, [option]);
 
     return (
         <Fragment>
@@ -81,8 +89,8 @@ const Marker = props => {
             />
         {option && option !== 'Current Location' &&
             <Fragment>
-                <Input placeholder="Latitude" onChange={(e, result) => setLatLong({ ...latLong, latitude: result.value})} />
-                <Input placeholder="Longitude" onChange={(e, result) => setLatLong({ ...latLong, longitude: result.value})}/>
+                <Input placeholder="Latitude" value={latLong.latitude} onChange={(e, result) => setLatLong({ ...latLong, latitude: e.target.value })} />
+                <Input placeholder="Longitude" value={latLong.longitude} onChange={(e, result) => setLatLong({ ...latLong, longitude: e.target.value })}/>
             </Fragment>
         }
         </Modal.Content>
