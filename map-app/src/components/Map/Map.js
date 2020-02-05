@@ -54,7 +54,7 @@ const MapContainer = props => {
   })
 
   useEffect(() => {
-    setInitialLocation({ lat: 33.8283, lng: -98.5795 });
+    setInitialLocation({ lat: 38.5, lng: -98.5795 });
   }, []);
 
   useEffect(() => {
@@ -103,11 +103,10 @@ const MapContainer = props => {
       <Segment style={{ padding: '0px', height: '92vh' }}>
         <Map
           google={props.google}
-          zoom={4}
+          zoom={5}
           style={mapStyles}
           initialCenter={initialLocation}
           yesIWantToUseGoogleMapApiInternals
-          // location={searchedLocation}
         >
           {renderMarkers()}
           {renderPolylines()}
