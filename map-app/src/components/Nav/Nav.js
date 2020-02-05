@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import { Dropdown, Icon, Menu, Header } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Header, Container, Segment } from 'semantic-ui-react';
 import Modal from '../Modal/Modal';
 import ModalOptions from '../Modal/ModalOptions';
 
@@ -20,30 +20,32 @@ const Nav = props => {
   }, [context]);
 
   return (
-    <Fragment>
-        <Menu attached='top' inverted>
-            <Menu.Item icon='angle right' onClick={showsidebar}></Menu.Item>
-            <Dropdown item icon='wrench' simple>
-                <Dropdown.Menu>
-                    <Dropdown.Item>
-                        
-                        <Icon name='dropdown' />
-                        <span className='text'>New</span>
+    <Container fluid>
+        <Segment style={{ padding: '0' }}>
+            <Menu attached='top' inverted>
+                <Menu.Item icon='angle right' onClick={showsidebar}></Menu.Item>
+                <Dropdown item icon='wrench' simple>
+                    <Dropdown.Menu>
+                        <Dropdown.Item>
+                            
+                            <Icon name='dropdown' />
+                            <span className='text'>New</span>
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item type='marker' onClick={onOpen} {...props}>Marker</Dropdown.Item>
-                        </Dropdown.Menu>
+                            <Dropdown.Menu>
+                                <Dropdown.Item type='marker' onClick={onOpen} {...props}>Marker</Dropdown.Item>
+                            </Dropdown.Menu>
 
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-            <Header style={{ margin: 'auto', paddingRight: '40px' }} inverted>Contiguous U.S. Earthquakes - 4.0+ Magnitude - (2000-2020)</Header>
-        </Menu>
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Header style={{ margin: 'auto', paddingRight: '40px' }} inverted>Contiguous U.S. Earthquakes - 4.0+ Magnitude - (2000-2020)</Header>
+            </Menu>
 
-        <Modal open={isOpen} onClose={onClose} >
-            {context}
-        </Modal>
-    </Fragment>
+            <Modal open={isOpen} onClose={onClose} >
+                {context}
+            </Modal>
+        </Segment>
+    </Container>
   )
 }
 

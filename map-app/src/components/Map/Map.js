@@ -9,8 +9,8 @@ const MapContainer = props => {
   const [polylines, setPolylines] = useState([]);
   const [initialLocation, setInitialLocation] = useState()
   const mapStyles = {
-    width: '98%',
-    height: '90%'
+    width: '100%',
+    height: '100%'
   };
 
   const icons = {
@@ -100,7 +100,7 @@ const MapContainer = props => {
 
   return (
     <Container fluid>
-      <Segment style={{ height: '100vh'}}>
+      <Segment style={{ padding: '0px', height: '92vh' }}>
         <Map
           google={props.google}
           zoom={4}

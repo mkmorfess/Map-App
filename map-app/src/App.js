@@ -37,6 +37,11 @@ function App() {
     setVisible(!visible);
   }
 
+  const closeTable = () => {
+    setLoadingSideBar(true);
+    setSelectedMarker(null);
+  }
+
   const handleAddFilter = value => {
     if (!value) return;
     setFilters([ ...filters, value ]);
@@ -111,7 +116,7 @@ function App() {
       <Container>
         <Segment style={{ width: 'inherit' }}>
           <Menu inverted>
-              <Menu.Item position='left' icon='angle right' onClick={() => setSelectedMarker(null)}/>
+              <Menu.Item position='left' icon='angle right' onClick={() => closeTable()}/>
           </Menu>
           <Table celled>
             <Table.Body>
@@ -168,13 +173,13 @@ function App() {
                 <List.Item>
                   <Image avatar src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
                   <List.Content>
-                    <List.Header>{`Magnitude < 5.0`}</List.Header>
+                    <List.Header>{`Magnitude <= 5.0`}</List.Header>
                   </List.Content>
                 </List.Item>
                 <List.Item>
                   <Image avatar src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" />
                   <List.Content>
-                    <List.Header>{`Magnitude > 5.0 and < 7.0`}</List.Header>
+                    <List.Header>{`Magnitude > 5.0 and <= 7.0`}</List.Header>
                   </List.Content>
                 </List.Item>
                 <List.Item>
